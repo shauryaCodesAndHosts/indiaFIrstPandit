@@ -1,6 +1,7 @@
 package com.indiafirstpandit.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,6 +38,12 @@ public class Puja {
     private String image1;
     private String image2;
     private String image3;
+
+    @ManyToOne
+//    @JsonManagedReference //to indicate parent
+    @JsonBackReference
+    private PujaCategory pujaCategory;  // Category of the product (e.g., flowers, utensils, etc.)
+
 
     @ManyToOne
     @JoinColumn(name = "samagri_id")

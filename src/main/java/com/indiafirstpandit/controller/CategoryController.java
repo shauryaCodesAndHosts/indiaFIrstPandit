@@ -41,6 +41,4 @@ public class CategoryController {
         return category.getProduct();
     }
 
-
-
 }

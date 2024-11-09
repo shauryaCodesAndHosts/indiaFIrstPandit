@@ -1,5 +1,6 @@
 package com.indiafirstpandit.service;
 
+import com.indiafirstpandit.model.Cart;
 import com.indiafirstpandit.model.User;
 import com.indiafirstpandit.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,10 @@ public class UserService {
     }
 
     public User saveUser(User user) {
+        if (user.getCart() == null) {
+            Cart cart = new Cart();
+            user.setCart(cart);
+        }
         return userRepository.save(user);
     }
 

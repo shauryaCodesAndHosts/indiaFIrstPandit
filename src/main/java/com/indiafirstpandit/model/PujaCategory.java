@@ -1,10 +1,11 @@
 package com.indiafirstpandit.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,7 +16,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Category {
+public class PujaCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,11 +30,11 @@ public class Category {
     private int totalItems;
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pujaCategory", cascade = CascadeType.ALL)
 //    @JsonBackReference // to indicate child
 //    @JsonIgnore
     @JsonManagedReference
-    private List<Product> product;
+    private List<Puja> pujas;
 
     @PrePersist
     protected void onCreate()
@@ -48,4 +49,6 @@ public class Category {
                 ", name='" + name + '\'' +
                 '}';
     }
+
 }
+

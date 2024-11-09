@@ -38,7 +38,7 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders;  // List of orders placed by the user
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Cart cart;
 
     @OneToMany(cascade = CascadeType.ALL)
