@@ -45,6 +45,7 @@ public class SecurityConfig {
                             .requestMatchers(HttpMethod.POST, "/api/users").permitAll()  // Allow POST requests to /api/users
                             .requestMatchers(HttpMethod.GET, "/api/users/email").permitAll()
                             .requestMatchers("/api/users","/api/users/email**", "/api/users/**").permitAll()   // Allow all other access to /api/users and subpaths
+//                            .requestMatchers("/swagger-ui/**").permitAll()
                             .anyRequest().authenticated())                                // All other requests need authentication
                     .httpBasic(Customizer.withDefaults())                             // Use Basic authentication
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless sessions
