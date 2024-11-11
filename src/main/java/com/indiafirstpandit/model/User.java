@@ -44,4 +44,6 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
 
+    private String role;
+
 }

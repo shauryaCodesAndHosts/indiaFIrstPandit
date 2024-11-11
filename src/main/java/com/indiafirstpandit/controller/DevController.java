@@ -1,11 +1,15 @@
 package com.indiafirstpandit.controller;
 
+import com.indiafirstpandit.model.User;
 import com.indiafirstpandit.model.UserPrincipal;
+import com.indiafirstpandit.service.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Enumeration;
 
@@ -68,6 +72,34 @@ public class DevController {
     public String helloWorld()
     {
         return "hello bitatch";
+    }
+
+    @Autowired
+    AuthenticationManager manager;
+
+
+    @Autowired
+    private JwtService jwtService;
+
+
+    @PostMapping("/login")
+    public String login(@RequestBody User user)
+    {
+        System.out.println("the user is ->"+user);
+        Authentication authentication = manager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getEmail(), user.getPassword()
+                )
+        );
+
+        if(authentication.isAuthenticated())
+        {
+            return jwtService.generateToken(user.getEmail());
+        }
+        else
+        {
+            return "wrong password" ;
+        }
     }
 
 }
