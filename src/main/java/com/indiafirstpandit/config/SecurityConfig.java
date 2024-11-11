@@ -42,10 +42,11 @@ public class SecurityConfig {
 
             http.csrf(customizer -> customizer.disable())
                     .authorizeHttpRequests(request -> request
-                            .requestMatchers(HttpMethod.POST, "/api/users").permitAll()  // Allow POST requests to /api/users
-                            .requestMatchers(HttpMethod.GET, "/api/users/email").permitAll()
+//                            .requestMatchers(HttpMethod.POST, "/api/users").permitAll()  // Allow POST requests to /api/users
+//                            .requestMatchers(HttpMethod.GET, "/api/users/email").permitAll()
                             .requestMatchers("/api/users","/api/users/email**", "/api/users/**").permitAll()   // Allow all other access to /api/users and subpaths
-//                            .requestMatchers("/swagger-ui/**").permitAll()
+//                            .requestMatchers("/swagger-ui/**","/swagger-ui**","/swagger-ui").permitAll()
+                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Allow access to Swagger UI and OpenAPI docs
                             .anyRequest().authenticated())                                // All other requests need authentication
                     .httpBasic(Customizer.withDefaults())                             // Use Basic authentication
                     .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless sessions
