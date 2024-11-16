@@ -1,5 +1,6 @@
 package com.indiafirstpandit.config;
 
+import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +24,9 @@ public class SecurityConfig {
 
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtFilter jwtFilter;
 
     @Bean
     public AuthenticationProvider authenticationProvider()
@@ -52,12 +57,15 @@ public class SecurityConfig {
 //                            .requestMatchers(HttpMethod.GET, "/api/users/email").permitAll()
                             .requestMatchers("/api/users","/api/users/email**", "/api/users/**").permitAll()   // Allow all other access to /api/users and subpaths
 //                            .requestMatchers("/swagger-ui/**","/swagger-ui**","/swagger-ui").permitAll()
-                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasAnyAuthority("ROLE_ADMIN")  // Allow access to Swagger UI and OpenAPI docs
+//                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasAnyAuthority("ROLE_ADMIN")  // Allow access to Swagger UI and OpenAPI docs
+                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                             .requestMatchers("/test/login","register").permitAll()
                             .anyRequest().authenticated())                                // All other requests need authentication
-                    .httpBasic(Customizer.withDefaults())                             // Use Basic authentication
-                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless sessions
-
+                    .oauth2Login(Customizer.withDefaults()) ;
+//                    .httpBasic(Customizer.withDefaults())                             // Use Basic authentication
+//                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless sessions
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+;
             return http.build();
 
     }
