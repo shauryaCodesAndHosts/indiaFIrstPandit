@@ -17,6 +17,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -52,6 +58,7 @@ public class SecurityConfig {
 //        return http.build();
 
             http.csrf(customizer -> customizer.disable())
+                    .cors(Customizer.withDefaults()) // Enable CORS
                     .authorizeHttpRequests(request -> request
 //                            .requestMatchers(HttpMethod.POST, "/api/users").permitAll()  // Allow POST requests to /api/users
 //                            .requestMatchers(HttpMethod.GET, "/api/users/email").permitAll()
@@ -60,8 +67,8 @@ public class SecurityConfig {
 //                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasAnyAuthority("ROLE_ADMIN")  // Allow access to Swagger UI and OpenAPI docs
                             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                             .requestMatchers("/test/login","register").permitAll()
-                            .anyRequest().authenticated())                                // All other requests need authentication
-                    .oauth2Login(Customizer.withDefaults()) ;
+                            .anyRequest().authenticated());                                // All other requests need authentication
+//                    .oauth2Login(Customizer.withDefaults()) ;
 //                    .httpBasic(Customizer.withDefaults())                             // Use Basic authentication
 //                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));  // Stateless sessions
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -80,5 +87,15 @@ public class SecurityConfig {
 //       return new InMemoryUserDetailsManager(user);
 //   }
 
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+        config.addAllowedOrigin("*"); // Allow all origins. Use specific origins in production for security.
+        config.addAllowedHeader("*"); // Allow all headers.
+        config.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, etc.).
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
+    }
 
 }

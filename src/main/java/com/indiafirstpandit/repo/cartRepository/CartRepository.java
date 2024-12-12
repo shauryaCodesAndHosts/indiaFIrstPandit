@@ -1,6 +1,6 @@
-package com.indiafirstpandit.repo;
+package com.indiafirstpandit.repo.cartRepository;
 
-import com.indiafirstpandit.model.Cart;
+import com.indiafirstpandit.model.cartItems.Cart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

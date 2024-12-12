@@ -1,5 +1,6 @@
 package com.indiafirstpandit.controller;
 
+import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Puja;
 import com.indiafirstpandit.service.PujaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,4 +45,15 @@ public class PujaController {
         pujaService.deletePuja(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Puja> updatePuja(@RequestBody Puja puja, @PathVariable UUID id)
+    {
+        ServiceStatus status = pujaService.updatePuja(id,puja);
+        if(status == ServiceStatus.Done)
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
+    }
+
 }

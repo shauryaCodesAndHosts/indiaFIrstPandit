@@ -1,6 +1,6 @@
 package com.indiafirstpandit.service;
 
-import com.indiafirstpandit.model.Cart;
+import com.indiafirstpandit.model.cartItems.Cart;
 import com.indiafirstpandit.model.User;
 import com.indiafirstpandit.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

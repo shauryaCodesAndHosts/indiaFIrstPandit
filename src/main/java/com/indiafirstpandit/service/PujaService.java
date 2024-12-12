@@ -1,5 +1,6 @@
 package com.indiafirstpandit.service;
 
+import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Puja;
 import com.indiafirstpandit.repo.PujaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,19 @@ public class PujaService {
 
     public void deletePuja(UUID id) {
         pujaRepository.deleteById(id);
+    }
+
+    public ServiceStatus updatePuja(UUID id,Puja updatedPuja){
+        Puja exisitngPuja = pujaRepository.findById(id).get();
+        if (exisitngPuja.getId()==null)
+        {
+            return ServiceStatus.Not_Found;
+        }
+        else
+        {
+            updatedPuja.setId(exisitngPuja.getId());
+            pujaRepository.save(updatedPuja);
+            return ServiceStatus.Done;
+        }
     }
 }

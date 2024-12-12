@@ -33,10 +33,16 @@ public class Product {
 
     private int stock;
 
+//    @ManyToOne
+////    @JsonManagedReference //to indicate parent
+////    @JsonBackReference
+//    private Category category;  // Category of the product (e.g., flowers, utensils, etc.)
+
     @ManyToOne
-//    @JsonManagedReference //to indicate parent
-    @JsonBackReference
-    private Category category;  // Category of the product (e.g., flowers, utensils, etc.)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
+//    (cascade = CascadeType.ALL)
 
     private LocalDateTime createdAt;
 
@@ -46,14 +52,14 @@ public class Product {
     }
 
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Product{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", price=" + price +
+//                '}';
+//    }
 
 //    @ManyToOne
 //    @JoinColumn(name = "samagri_id")

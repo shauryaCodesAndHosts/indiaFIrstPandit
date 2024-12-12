@@ -15,6 +15,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class Category {
 
     @Id
@@ -26,13 +27,13 @@ public class Category {
 
     @Column(length = 1000)
     private String description;
-    private int totalItems;
+    private Integer totalItems;
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category")
 //    @JsonBackReference // to indicate child
-//    @JsonIgnore
-    @JsonManagedReference
+    @JsonIgnore
+//    @JsonManagedReference
     private List<Product> product;
 
     @PrePersist
@@ -41,11 +42,11 @@ public class Category {
         this.createdAt = LocalDateTime.now();
     }
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Category{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                '}';
+//    }
 }

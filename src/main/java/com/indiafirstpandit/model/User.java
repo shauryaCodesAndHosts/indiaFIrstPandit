@@ -1,6 +1,6 @@
 package com.indiafirstpandit.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.indiafirstpandit.model.cartItems.Cart;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

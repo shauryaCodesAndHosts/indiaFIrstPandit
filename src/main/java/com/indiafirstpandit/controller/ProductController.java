@@ -1,5 +1,7 @@
 package com.indiafirstpandit.controller;
 
+import com.indiafirstpandit.dto.ProductDto;
+import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Category;
 import com.indiafirstpandit.model.Product;
 import com.indiafirstpandit.service.ProductService;
@@ -17,15 +19,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping
+    @GetMapping("/getAll")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable UUID id) {
-        Product product = productService.getProductById(id);
-        return ResponseEntity.ok(product);
+    public ResponseEntity<ProductDto> getProductById(@PathVariable UUID id) {
+        ProductDto productDto = productService.getProductById(id);
+        return ResponseEntity.ok(productDto);
     }
 
     @GetMapping("/category")
@@ -35,15 +37,25 @@ public class ProductController {
 //        return null;
     }
 
-    @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        Product savedProduct = productService.saveProduct(product);
+    @PostMapping("/create")
+    public ResponseEntity<Product> createProduct(@RequestBody ProductDto productDto) {
+        Product savedProduct = productService.saveProduct(productDto);
         return ResponseEntity.ok(savedProduct);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable UUID id) {
         productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent().build(); // sends status code 204
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable UUID id, @RequestBody ProductDto updatedProductDto)
+    {
+        ServiceStatus status = productService.updateProduct(id, updatedProductDto);
+        if(status == ServiceStatus.Done)
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
     }
 }

@@ -2,10 +2,7 @@ package com.indiafirstpandit.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,6 +13,7 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class PujaCategory {
 
     @Id
@@ -25,9 +23,9 @@ public class PujaCategory {
     private String name;
     private String image;
 
-    @Column(length = 1000)
+//    @Column(length = 1000)
     private String description;
-    private int totalItems;
+    private Integer totalItems;
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "pujaCategory", cascade = CascadeType.ALL)
@@ -42,13 +40,6 @@ public class PujaCategory {
         this.createdAt = LocalDateTime.now();
     }
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 
 }
 

@@ -31,7 +31,9 @@ public class Puja {
     @Column(length = 1000)
     private String mantra;
 
-    private int panditNeeded;  // Number of priests needed for this puja
+    private Integer panditNeeded;  // Number of priests needed for this puja
+
+    private Integer freqExtraAddedPandit;
 
     private BigDecimal amount; // Cost of the puja
 

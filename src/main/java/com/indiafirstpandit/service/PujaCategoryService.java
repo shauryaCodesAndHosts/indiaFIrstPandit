@@ -1,10 +1,13 @@
 package com.indiafirstpandit.service;
 
+import com.indiafirstpandit.dto.PujaCategoryDto;
+import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Category;
 import com.indiafirstpandit.model.Puja;
 import com.indiafirstpandit.model.PujaCategory;
 import com.indiafirstpandit.repo.PujaCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,15 +20,35 @@ public class PujaCategoryService {
     @Autowired
     private PujaCategoryRepository pujaCategoryRepository;
 
+
     public List<PujaCategory> getAllCategories(){
         return pujaCategoryRepository.findAll();
     }
+
     public PujaCategory addCategory(PujaCategory pujaCategory)
     {
         pujaCategoryRepository.save(pujaCategory);
         return pujaCategory;
     }
-    public PujaCategory getCategory(UUID id) {
-        return pujaCategoryRepository.getReferenceById(id);
+
+
+    public void deletePujaCategory(UUID id) {
+        pujaCategoryRepository.deleteById(id);
+    }
+
+
+
+
+    public PujaCategoryDto getPujaCategory(UUID id) {
+        PujaCategory pujaCategory= pujaCategoryRepository.findById(id).orElse(new PujaCategory());
+        return new PujaCategoryDto(pujaCategory);
+    }
+
+
+
+
+
+    public ServiceStatus updatePujaCategory(UUID id, PujaCategory updatedPujaCategory) {
+        return ServiceStatus.Not_Found;
     }
 }

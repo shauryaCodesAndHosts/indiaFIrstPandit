@@ -1,5 +1,7 @@
 package com.indiafirstpandit.service;
 
+import com.indiafirstpandit.dto.ProductDto;
+import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Category;
 import com.indiafirstpandit.model.Product;
 import com.indiafirstpandit.repo.CategoryRepository;
@@ -22,8 +24,10 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(UUID id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    public ProductDto getProductById(UUID id) {
+        Product product = productRepository.getReferenceById(id);
+        ProductDto productDto = new ProductDto(product);
+        return productDto;
     }
 
     public List<Product> getProductsByCategory(Category category) {
@@ -41,12 +45,39 @@ public class ProductService {
         return productRepository.findByPriceLessThanEqual(price);
     }
 
-    public Product saveProduct(Product product) {
+    public Product saveProduct(ProductDto product) {
         System.out.println(product);
-        return productRepository.save(product);
+        Product newProduct = new Product();
+        newProduct.setName(product.getName());
+        newProduct.setImage(product.getImage());
+        newProduct.setDescription(product.getDescription());
+        newProduct.setPrice(product.getPrice());
+        newProduct.setStock(product.getStock());
+        newProduct.setCategory(categoryRepository.getReferenceById(product.getCategoryId()));
+        productRepository.save(newProduct);
+        return new Product();
     }
 
     public void deleteProduct(UUID id) {
+
         productRepository.deleteById(id);
+    }
+
+    public ServiceStatus updateProduct(UUID id, ProductDto updatedProduct) {
+        Product existingProduct = productRepository.findById(id).orElse(new Product());
+        if(existingProduct.getId() == null){
+            return ServiceStatus.Not_Found;
+        }
+        else{
+            existingProduct.setName(updatedProduct.getName());
+            existingProduct.setImage(updatedProduct.getImage());
+            existingProduct.setDescription(updatedProduct.getDescription());
+            existingProduct.setPrice(updatedProduct.getPrice());
+            existingProduct.setStock(updatedProduct.getStock());
+            productRepository.save(existingProduct);
+            return ServiceStatus.Done;
+        }
+
+
     }
 }
