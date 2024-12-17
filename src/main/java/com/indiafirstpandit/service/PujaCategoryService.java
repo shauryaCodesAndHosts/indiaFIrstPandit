@@ -50,6 +50,18 @@ public class PujaCategoryService {
 
 
     public ServiceStatus updatePujaCategory(UUID id, PujaCategory updatedPujaCategory) {
-        return ServiceStatus.Not_Found;
+        PujaCategory existingPujaCategory = pujaCategoryRepository.findById(id).orElse(new PujaCategory());
+        if(existingPujaCategory.getId()==null)
+        {
+            return ServiceStatus.Not_Found;
+        }
+        else {
+            existingPujaCategory.setName(updatedPujaCategory.getName());
+            existingPujaCategory.setImage(updatedPujaCategory.getImage());
+            existingPujaCategory.setDescription(updatedPujaCategory.getDescription());
+            existingPujaCategory.setTotalItems(updatedPujaCategory.getTotalItems());
+            pujaCategoryRepository.save(existingPujaCategory);
+            return ServiceStatus.Done;
+        }
     }
 }

@@ -1,5 +1,7 @@
-package com.indiafirstpandit.dto;
+package com.indiafirstpandit.dto.samagri;
 
+import com.indiafirstpandit.dto.ProductDto;
+import com.indiafirstpandit.dto.PujaDto;
 import com.indiafirstpandit.model.Samagri;
 import lombok.Data;
 import lombok.Getter;

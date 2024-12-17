@@ -23,9 +23,9 @@ public class PujaCategoryController {
     private PujaCategoryService pujaCategoryService;
 
     @GetMapping("/getAll")
-    public List<PujaCategory> getAll()
+    public List<PujaCategoryDto> getAll()
     {
-        return pujaCategoryService.getAllCategories();
+        return pujaCategoryService.getAllCategories().stream().map(PujaCategoryDto::new).toList();
     }
 
     @PostMapping("/create")

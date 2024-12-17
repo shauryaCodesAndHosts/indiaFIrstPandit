@@ -43,11 +43,12 @@ public class Puja {
 
     @ManyToOne
 //    @JsonManagedReference //to indicate parent
-    @JsonBackReference
+//    @JsonBackReference
+    @JoinColumn(name = "puja_category_id")
     private PujaCategory pujaCategory;  // Category of the product (e.g., flowers, utensils, etc.)
 
 
-    @ManyToOne
-    @JoinColumn(name = "samagri_id")
-    private Samagri samagri;  // Association to the Samagri entity
+//    @ManyToOne(optional = true)
+////    @JoinColumn(name = "samagri_id")
+//    private Samagri samagri;  // Association to the Samagri entity
 }

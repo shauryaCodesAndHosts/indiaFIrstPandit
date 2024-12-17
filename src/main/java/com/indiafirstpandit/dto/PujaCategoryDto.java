@@ -1,9 +1,7 @@
 package com.indiafirstpandit.dto;
 
 import com.indiafirstpandit.model.PujaCategory;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +10,8 @@ import java.util.UUID;
 @Data
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PujaCategoryDto {
 
     public PujaCategoryDto(PujaCategory pujaCategory)

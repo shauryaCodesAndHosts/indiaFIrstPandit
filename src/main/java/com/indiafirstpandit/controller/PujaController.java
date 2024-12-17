@@ -1,5 +1,6 @@
 package com.indiafirstpandit.controller;
 
+import com.indiafirstpandit.dto.PujaDto;
 import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Puja;
 import com.indiafirstpandit.service.PujaService;
@@ -11,21 +12,52 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/pujas")
+@RequestMapping("/api/puja")
 public class PujaController {
 
     @Autowired
     private PujaService pujaService;
 
-    @GetMapping
-    public List<Puja> getAllPujas() {
-        return pujaService.getAllPujas();
+    @GetMapping("/getAll")
+    public List<PujaDto> getAllPujas() {
+        return pujaService.getAllPujas().stream().map(PujaDto::new).toList();
     }
 
+    @PostMapping("/create")
+    public ResponseEntity<PujaDto> createPuja(@RequestBody PujaDto pujaDto) {
+//        System.out.println(puja);
+        Puja savedPuja = pujaService.savePuja(pujaDto);
+        return ResponseEntity.ok(new PujaDto(savedPuja));
+    }
+
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deletePuja(@PathVariable UUID id) {
+        pujaService.deletePuja(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Puja> updatePuja(@RequestBody PujaDto pujaDto, @PathVariable UUID id)
+    {
+        ServiceStatus status = pujaService.updatePuja(id,pujaDto);
+        if(status == ServiceStatus.Done)
+            return ResponseEntity.ok().build();
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+
+
+
+
+
     @GetMapping("/{id}")
-    public ResponseEntity<Puja> getPujaById(@PathVariable UUID id) {
+    public ResponseEntity<PujaDto> getPujaById(@PathVariable UUID id) {
         Puja puja = pujaService.getPujaById(id);
-        return ResponseEntity.ok(puja);
+        PujaDto pujaDto = new PujaDto(puja);
+        return ResponseEntity.ok(pujaDto);
     }
 
     @GetMapping("/search")
@@ -33,27 +65,7 @@ public class PujaController {
         return pujaService.getPujasByName(name);
     }
 
-    @PostMapping
-    public ResponseEntity<Puja> createPuja(@RequestBody Puja puja) {
-        System.out.println(puja);
-        Puja savedPuja = pujaService.savePuja(puja);
-        return ResponseEntity.ok(savedPuja);
-    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePuja(@PathVariable UUID id) {
-        pujaService.deletePuja(id);
-        return ResponseEntity.noContent().build();
-    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Puja> updatePuja(@RequestBody Puja puja, @PathVariable UUID id)
-    {
-        ServiceStatus status = pujaService.updatePuja(id,puja);
-        if(status == ServiceStatus.Done)
-            return ResponseEntity.ok().build();
-        else
-            return ResponseEntity.notFound().build();
-    }
 
 }

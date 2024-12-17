@@ -2,13 +2,18 @@ package com.indiafirstpandit.dto;
 
 import com.indiafirstpandit.model.Puja;
 import com.indiafirstpandit.model.Samagri;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 
 
-
+@Getter
+@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PujaDto {
 
     public PujaDto(Puja puja)
@@ -26,8 +31,14 @@ public class PujaDto {
         this.image2 = puja.getImage2();
         this.image3 = puja.getImage3();
 
-        this.pujaCategoryDto = new PujaCategoryDto(puja.getPujaCategory());
-        this.samagriDto = new SamagriDto(puja.getSamagri());
+        this.pujaCategoryId = puja.getPujaCategory().getId();
+//        if(puja.getSamagri()!=null) {
+//            this.samagriId = puja.getSamagri().getId();
+//        }
+//        else
+//        {
+//            this.samagriId = null;
+//        }
     }
 
 
@@ -42,6 +53,6 @@ public class PujaDto {
     private String image1;
     private String image2;
     private String image3;
-    private PujaCategoryDto pujaCategoryDto;
-    private SamagriDto samagriDto;
+    private UUID pujaCategoryId;
+//    private UUID samagriId;
 }

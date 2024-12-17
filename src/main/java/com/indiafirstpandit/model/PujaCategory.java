@@ -31,7 +31,7 @@ public class PujaCategory {
     @OneToMany(mappedBy = "pujaCategory", cascade = CascadeType.ALL)
 //    @JsonBackReference // to indicate child
 //    @JsonIgnore
-    @JsonManagedReference
+//    @JsonManagedReference
     private List<Puja> pujas;
 
     @PrePersist

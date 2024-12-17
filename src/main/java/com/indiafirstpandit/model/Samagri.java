@@ -23,9 +23,9 @@ public class Samagri {
     private String name;
 
     //(mappedBy = "samagri", cascade = CascadeType.ALL)
-    @OneToMany
+    @ManyToMany
     private List<Product> products;  // List of products in the samagri
 
-    @OneToMany(mappedBy = "samagri", cascade = CascadeType.ALL)
+    @ManyToMany
     private List<Puja> pujas;  // List of pujas associated with this samagri
 }
