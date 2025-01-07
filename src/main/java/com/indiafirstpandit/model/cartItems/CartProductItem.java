@@ -1,5 +1,6 @@
 package com.indiafirstpandit.model.cartItems;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.indiafirstpandit.model.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,19 +13,20 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class CartProductItem {
+public class CartProductItem
+{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-
     private int quantity;
 
-    @OneToOne
+    @ManyToOne
     private Product product;
 
     private int discount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "cart_id")
     private Cart cart;

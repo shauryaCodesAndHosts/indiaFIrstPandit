@@ -24,8 +24,22 @@ public class Priest {
 
     private String contactNumber;
 
+    private String contactNumber2;
+
     private String expertise;  // Expertise in specific types of pujas
 
-    private String address;
+    private String presentAddress;
+
+    private String permanentAddress;
+
+    private String documentsLink;
+
+    private Integer numberOfPujaDone;
+
+    private String complaints;
+
+    private String additionalInformation;
+
+    private boolean verified;
 
 }

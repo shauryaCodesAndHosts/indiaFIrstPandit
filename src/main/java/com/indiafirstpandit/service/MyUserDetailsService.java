@@ -29,7 +29,7 @@ public class MyUserDetailsService implements UserDetailsService {
         User user = repo.findByEmail(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with email: " + username));
 
-        System.out.println("User found: " + user);
+//        System.out.println("User found: " + user);
 
         return new UserPrincipal(user);
 

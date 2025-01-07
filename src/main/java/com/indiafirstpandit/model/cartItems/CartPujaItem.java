@@ -23,7 +23,7 @@ public class CartPujaItem {
 
     private int panditAdded;
 
-    @OneToOne
+    @ManyToOne
     private Puja puja;
 
     private int discount;

@@ -1,5 +1,6 @@
 package com.indiafirstpandit.service;
 
+import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Priest;
 import com.indiafirstpandit.repo.PriestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,5 +37,18 @@ public class PriestService {
 
     public void deletePriest(UUID id) {
         priestRepository.deleteById(id);
+    }
+
+    public ServiceStatus editPriest(UUID id, Priest updatedPriest) {
+        if(priestRepository.existsById(id))
+        {
+            Priest priest = priestRepository.findById(id).orElse(new Priest());
+            updatedPriest.setId(priest.getId());
+            priestRepository.save(updatedPriest);
+            return ServiceStatus.Done ;
+        }
+        else {
+            return ServiceStatus.Not_Found;
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.indiafirstpandit.controller;
 
+import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Priest;
 import com.indiafirstpandit.service.PriestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,15 @@ public class PriestController {
     @Autowired
     private PriestService priestService;
 
-    @GetMapping
+
+    @PostMapping("/create")
+    public ResponseEntity<Priest> createPriest(@RequestBody Priest priest) {
+        Priest savedPriest = priestService.savePriest(priest);
+        return ResponseEntity.ok(savedPriest);
+    }
+
+
+    @GetMapping("/getAll")
     public List<Priest> getAllPriests() {
         return priestService.getAllPriests();
     }
@@ -25,6 +34,13 @@ public class PriestController {
     public ResponseEntity<Priest> getPriestById(@PathVariable UUID id) {
         Priest priest = priestService.getPriestById(id);
         return ResponseEntity.ok(priest);
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<ServiceStatus> editPriests(@PathVariable UUID id, @RequestBody Priest priest)
+    {
+        ServiceStatus status = priestService.editPriest(id, priest);
+        return ResponseEntity.ok(status);
     }
 
     @GetMapping("/search")
@@ -37,13 +53,8 @@ public class PriestController {
         return priestService.getAllPriests();
     }
 
-    @PostMapping
-    public ResponseEntity<Priest> createPriest(@RequestBody Priest priest) {
-        Priest savedPriest = priestService.savePriest(priest);
-        return ResponseEntity.ok(savedPriest);
-    }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletePriest(@PathVariable UUID id) {
         priestService.deletePriest(id);
         return ResponseEntity.noContent().build();

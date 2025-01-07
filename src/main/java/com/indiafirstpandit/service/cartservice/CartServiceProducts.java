@@ -47,6 +47,7 @@ public class CartServiceProducts {
         cartProductItem.setProduct(productRepository.getReferenceById(id));
         cartProductItem.setQuantity(quantity);
         cartProductItem.setDiscount(0);
+        cartProductItem.setCart(userCart); // Associate the item with the cart
         cartRepoProduct.save(cartProductItem);
 
         userCart.getProductCart().add(cartProductItem);

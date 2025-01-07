@@ -22,7 +22,7 @@ public class CartSamagriItem {
 
     private int quantity;
 
-    @OneToOne
+    @ManyToOne
     private Samagri samagri;
 
     private int discount;

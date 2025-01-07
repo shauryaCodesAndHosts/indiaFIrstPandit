@@ -1,5 +1,6 @@
 package com.indiafirstpandit.model;
 
+import com.indiafirstpandit.enums.UserRoles;
 import com.indiafirstpandit.model.cartItems.Cart;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,6 +45,6 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
 
-    private String role;
+    private UserRoles role;
 
 }

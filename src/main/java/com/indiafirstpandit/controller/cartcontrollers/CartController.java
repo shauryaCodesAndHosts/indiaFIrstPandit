@@ -1,13 +1,12 @@
 package com.indiafirstpandit.controller;
 
-import com.indiafirstpandit.model.cartItems.Cart;
+import com.indiafirstpandit.dto.cartDTO.CartDto;
 import com.indiafirstpandit.model.UserPrincipal;
+import com.indiafirstpandit.model.cartItems.Cart;
 import com.indiafirstpandit.service.cartservice.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -17,9 +16,11 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping("/getAllProducts")
-    public Cart getCart(@AuthenticationPrincipal UserPrincipal userPrincipal)
+    public CartDto getCart(@AuthenticationPrincipal UserPrincipal userPrincipal)
     {
-        return userPrincipal.getUser().getCart();
+//        System.out.println(userPrincipal.getUser().getCart());
+        System.out.println();
+        return new CartDto( userPrincipal.getUser().getCart());
     }
 
 //    @PostMapping("/addPujaToCart")
