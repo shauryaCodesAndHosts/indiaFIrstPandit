@@ -21,6 +21,8 @@ public class SamagriDto {
     {
         this.id = samagri.getId();
         this.name = samagri.getName();
+        this.price = samagri.getPrice();
+        this.stock = samagri.getStock();
         if(samagri.getProducts()!=null)
         {
             this.productDtos = samagri.getProducts().stream().map(ProductDto::new).toList();
@@ -34,7 +36,8 @@ public class SamagriDto {
 
     private UUID id;
     private String name;
-
+    private Double price;
+    private Integer stock;
     private List<ProductDto> productDtos;
 
     private List<PujaDto> pujaDtos;

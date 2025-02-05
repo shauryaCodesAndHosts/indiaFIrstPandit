@@ -26,6 +26,8 @@ public class PujaDto {
         this.mantra = puja.getMantra();
         this.panditNeeded = puja.getPanditNeeded();
         this.freqExtraAddedPandit = puja.getFreqExtraAddedPandit();
+        this.maxPandits = puja.getMaxPandits();
+        this.pricePerExtraPandit = puja.getPricePerExtraPandit();
         this.amount = puja.getAmount();
         this.image1 = puja.getImage1();
         this.image2 = puja.getImage2();
@@ -49,7 +51,9 @@ public class PujaDto {
     private String mantra;
     private Integer panditNeeded;
     private Integer freqExtraAddedPandit;
-    private BigDecimal amount;
+    private Double pricePerExtraPandit;
+    private Integer maxPandits;
+    private Double amount;
     private String image1;
     private String image2;
     private String image3;

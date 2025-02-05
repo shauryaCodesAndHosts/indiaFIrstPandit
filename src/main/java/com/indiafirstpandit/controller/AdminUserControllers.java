@@ -1,10 +1,10 @@
 package com.indiafirstpandit.controller;
 
 import com.indiafirstpandit.enums.UserRoles;
-import com.indiafirstpandit.model.Order;
+import com.indiafirstpandit.model.LocalOrder;
 import com.indiafirstpandit.model.User;
 import com.indiafirstpandit.model.UserPrincipal;
-import com.indiafirstpandit.model.cartItems.Cart;
+import com.indiafirstpandit.model.Cart;
 import com.indiafirstpandit.service.UserAdminService;
 import com.indiafirstpandit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ public class AdminUserControllers {
     }
 
     @GetMapping("/{id}/orders")
-    public List<Order> getUserOrders(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable UUID id)
+    public List<LocalOrder> getUserOrders(@AuthenticationPrincipal UserPrincipal userPrincipal, @PathVariable UUID id)
     {
         if (userPrincipal.getUser().getRole()==UserRoles.Admin)
         {

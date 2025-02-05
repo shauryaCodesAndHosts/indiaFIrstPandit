@@ -1,8 +1,8 @@
 package com.indiafirstpandit.service;
 
-import com.indiafirstpandit.model.Order;
+import com.indiafirstpandit.model.LocalOrder;
 import com.indiafirstpandit.model.User;
-import com.indiafirstpandit.model.cartItems.Cart;
+import com.indiafirstpandit.model.Cart;
 import com.indiafirstpandit.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,7 +31,7 @@ public class UserAdminService {
         return userRepository.getReferenceById(id).getCart();
     }
 
-    public List<Order> getUserOrders(UUID id) {
+    public List<LocalOrder> getUserOrders(UUID id) {
         return userRepository.getReferenceById(id).getOrders();
     }
 }

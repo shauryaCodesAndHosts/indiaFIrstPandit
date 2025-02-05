@@ -26,8 +26,8 @@ public class ProductDto {
     private String name;
     private String image;
     private String description;
-    private BigDecimal price;
-    private int stock;
+    private Double price;
+    private Integer stock;
     private UUID categoryId;
     private LocalDateTime createdAt;
 
@@ -42,7 +42,6 @@ public class ProductDto {
         this.stock = product.getStock();
         this.categoryId = product.getCategory().getId();
         this.createdAt = product.getCreatedAt();
-
     }
 
     public Product toProduct()

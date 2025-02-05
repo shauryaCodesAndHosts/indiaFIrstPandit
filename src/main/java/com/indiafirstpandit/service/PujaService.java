@@ -54,6 +54,8 @@ public class PujaService {
         puja.setMantra(pujaDto.getMantra());
         puja.setPanditNeeded(pujaDto.getPanditNeeded());
         puja.setFreqExtraAddedPandit(pujaDto.getFreqExtraAddedPandit());
+        puja.setPricePerExtraPandit(pujaDto.getPricePerExtraPandit());
+        puja.setMaxPandits(pujaDto.getMaxPandits());
         puja.setAmount(pujaDto.getAmount());
         puja.setImage1(pujaDto.getImage1());
         puja.setImage2(pujaDto.getImage2());

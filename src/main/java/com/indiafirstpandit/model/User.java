@@ -1,7 +1,6 @@
 package com.indiafirstpandit.model;
 
 import com.indiafirstpandit.enums.UserRoles;
-import com.indiafirstpandit.model.cartItems.Cart;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,7 +36,7 @@ public class User {
 //    private Order orders;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Order> orders;  // List of orders placed by the user
+    private List<LocalOrder> orders;  // List of orders placed by the user
 
     @OneToOne(cascade = CascadeType.ALL)
     private Cart cart;

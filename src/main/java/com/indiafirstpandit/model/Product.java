@@ -29,9 +29,9 @@ public class Product {
     @Column(length = 1000)
     private String description;
 
-    private BigDecimal price;
+    private Double price;
 
-    private int stock;
+    private Integer stock;
 
 //    @ManyToOne
 ////    @JsonManagedReference //to indicate parent

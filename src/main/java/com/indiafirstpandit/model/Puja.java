@@ -1,14 +1,12 @@
 package com.indiafirstpandit.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 import java.util.UUID;
+
 
 @Entity
 @Data
@@ -35,7 +33,11 @@ public class Puja {
 
     private Integer freqExtraAddedPandit;
 
-    private BigDecimal amount; // Cost of the puja
+    private Double pricePerExtraPandit;
+
+    private Integer maxPandits;
+
+    private Double amount; // Cost of the puja
 
     private String image1;
     private String image2;

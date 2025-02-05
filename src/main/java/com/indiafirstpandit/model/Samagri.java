@@ -22,6 +22,10 @@ public class Samagri {
 
     private String name;
 
+    private Double price;
+
+    private Integer stock;
+
     //(mappedBy = "samagri", cascade = CascadeType.ALL)
     @ManyToMany
     private List<Product> products;  // List of products in the samagri

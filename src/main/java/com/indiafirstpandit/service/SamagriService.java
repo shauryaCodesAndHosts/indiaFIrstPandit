@@ -57,6 +57,7 @@ public class SamagriService {
         if(samagriRepository.existsById(id)) {
             Samagri samagri = samagriRepository.findById(id).orElse(new Samagri());
             samagri.setName(samagriInformation.getName());
+//            samagri.setStock(sa);
             samagriRepository.save(samagri);
             return ServiceStatus.Done;
         }

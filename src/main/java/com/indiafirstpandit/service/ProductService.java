@@ -30,6 +30,12 @@ public class ProductService {
         return productDto;
     }
 
+    public Product getProductByIdNotProductDto(UUID id) {
+        Product product = productRepository.getReferenceById(id);
+        return product;
+    }
+
+
     public List<Product> getProductsByCategory(Category category) {
 //        return productRepository.findByCategoryContainingIgnoreCase(category);
 //        return category.getProduct();
