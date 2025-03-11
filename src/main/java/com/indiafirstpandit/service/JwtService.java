@@ -22,7 +22,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private String secretKey ;
+    private final String secretKey ;
     public JwtService() throws NoSuchAlgorithmException {
         secretKey = generateSecretKey();
     }
@@ -35,7 +35,7 @@ public class JwtService {
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 3))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15))
                 .signWith(getKey(), SignatureAlgorithm.HS256).compact() ;
     }
 
@@ -80,7 +80,7 @@ public class JwtService {
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

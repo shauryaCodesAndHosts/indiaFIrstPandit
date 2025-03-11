@@ -67,6 +67,17 @@ public class SecurityConfig {
 //                            .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").hasAnyAuthority("ROLE_ADMIN")  // Allow access to Swagger UI and OpenAPI docs
                             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                             .requestMatchers("/test/login","register").permitAll()
+                            .requestMatchers("/test/testTime").permitAll()
+                            .requestMatchers("/api/v1/auth/register").permitAll()
+                            .requestMatchers("/api/v1/auth/verify").permitAll()
+                            .requestMatchers("/api/v1/auth/login").permitAll()
+                            .requestMatchers("/api/v1/auth/resendOtp").permitAll()
+                            .requestMatchers("/api/v1/auth/refresh").permitAll()
+                            .requestMatchers("/api/v1/auth/forgotPassword/email").permitAll()
+                            .requestMatchers("/api/v1/auth/forgotPassword/validateOtp").permitAll()
+                            .requestMatchers("/api/v1/auth/forgotPassword/newPassword").permitAll()
+
+
                             .anyRequest().authenticated());                                // All other requests need authentication
 //                    .oauth2Login(Customizer.withDefaults()) ;
 //                    .httpBasic(Customizer.withDefaults())                             // Use Basic authentication

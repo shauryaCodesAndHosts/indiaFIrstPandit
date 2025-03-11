@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.Enumeration;
 
 @RestController
@@ -100,6 +101,12 @@ public class DevController {
         {
             return "wrong password" ;
         }
+    }
+
+    @GetMapping("/testTime")
+    public void printTime()
+    {
+        System.out.println(Instant.now());
     }
 
 }

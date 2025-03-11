@@ -1,8 +1,10 @@
 package com.indiafirstpandit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.indiafirstpandit.enums.UserRoles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +17,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@Builder
 public class User {
 
     @Id
@@ -44,6 +47,20 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses;
 
+
+    private boolean isVerified;
+
     private UserRoles role;
+
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private RefreshToken refreshToken;
+
+//    private String otp;
+
+    @OneToOne
+    @JsonIgnore
+    private Otp otp;
+
 
 }
