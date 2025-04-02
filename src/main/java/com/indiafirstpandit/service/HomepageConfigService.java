@@ -1,11 +1,19 @@
 package com.indiafirstpandit.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.indiafirstpandit.dto.ProductDto;
+import com.indiafirstpandit.dto.PujaDto;
+import com.indiafirstpandit.dto.samagri.SamagriDto;
+import com.indiafirstpandit.model.Puja;
 import com.indiafirstpandit.model.homepage.HomepageSection;
 import com.indiafirstpandit.model.homepage.SectionDataItem;
+import com.indiafirstpandit.repo.ProductRepository;
+import com.indiafirstpandit.repo.PujaRepository;
+import com.indiafirstpandit.repo.SamagriRepository;
 import com.indiafirstpandit.repo.homepage.HomepageConfigRepo;
 import com.indiafirstpandit.repo.homepage.SectionDataItemRepo;
 import com.indiafirstpandit.requests.JustUUID;
+import com.indiafirstpandit.response.SearchResults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +31,15 @@ public class HomepageConfigService {
     private SectionDataItemRepo sectionDataItemRepo;
 
     private ObjectMapper objectMapper;
+
+    @Autowired
+    private PujaRepository pujaRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private SamagriRepository samagriRepository;
 
     public List<HomepageSection> getActiveHomepageConfigSections()
     {
@@ -97,6 +114,15 @@ public class HomepageConfigService {
         sectionDataItemRepo.deleteById(id);
         homepageConfigRepo.save(homepageSection);
         return homepageSection.getSectionDataItems();
+    }
+
+    public SearchResults searchByKeyword(String keyword) {
+        List<PujaDto> pujas = pujaRepository.searchPujas(keyword).stream().map(PujaDto::new).toList();
+        List<ProductDto> products = productRepository.searchProducts(keyword).stream().map(ProductDto::new).toList();
+        List<SamagriDto> samagris = samagriRepository.searchSamagris(keyword).stream().map(SamagriDto::new).toList();
+
+//        System.out.println(pujas);
+        return SearchResults.builder().pujas(pujas).samagris(samagris).products(products).build();
     }
 
 //

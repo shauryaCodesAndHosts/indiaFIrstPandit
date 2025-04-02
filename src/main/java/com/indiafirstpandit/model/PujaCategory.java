@@ -39,7 +39,5 @@ public class PujaCategory {
     {
         this.createdAt = LocalDateTime.now();
     }
-
-
 }
 

@@ -23,6 +23,9 @@ public class CartItem {
 
     private UUID itemId; // The UUID of the item (Product, Puja, or Samagri)
 
+    private String name;
+    private String image;
+
     @Enumerated(EnumType.STRING)
     private CartItemType cartItemType; // Enum to specify the type of item (PRODUCT, PUJA, SAMAGRI)
 
@@ -37,6 +40,9 @@ public class CartItem {
     private Double finalPrice;
 
     private LocalDateTime addedAt;
+
+
+    private UUID samagriId;
 
     @PrePersist
     protected void onCreate() {

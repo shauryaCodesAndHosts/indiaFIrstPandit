@@ -4,6 +4,7 @@ import com.indiafirstpandit.model.homepage.HomepageSection;
 import com.indiafirstpandit.model.homepage.SectionDataItem;
 import com.indiafirstpandit.requests.HomepageUpdateRequest;
 import com.indiafirstpandit.requests.JustUUID;
+import com.indiafirstpandit.response.SearchResults;
 import com.indiafirstpandit.service.HomepageConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -72,6 +73,14 @@ public class HomepageController {
     {
         // section data item must have the id defined in the body
         return ResponseEntity.ok(homepageConfigService.deleteHomepageSectionDataItem(homepageSectionId, id.getId()));
+    }
+
+
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<SearchResults> search(@PathVariable String keyword)
+    {
+        SearchResults results = homepageConfigService.searchByKeyword(keyword);
+        return ResponseEntity.ok(results);
     }
 
 }

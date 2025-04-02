@@ -1,5 +1,6 @@
 package com.indiafirstpandit.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.indiafirstpandit.enums.OrderItemType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ public class LocalOrderItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private LocalOrder order;

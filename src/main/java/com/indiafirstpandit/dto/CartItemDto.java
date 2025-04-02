@@ -24,6 +24,7 @@ public class CartItemDto {
         this.discount = cartItem.getDiscount();
         this.finalPrice = cartItem.getFinalPrice();
         this.cartId = cartItem.getCart().getId();
+        this.samagriId = cartItem.getSamagriId();
         this.addedAt = cartItem.getAddedAt();
     }
 
@@ -34,5 +35,7 @@ public class CartItemDto {
     private Integer discount;
     private Double finalPrice;
     private UUID cartId;
+    private UUID samagriId;
     private LocalDateTime addedAt;
+
 }

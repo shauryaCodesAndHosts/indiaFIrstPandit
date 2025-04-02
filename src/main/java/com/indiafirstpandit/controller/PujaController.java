@@ -3,6 +3,7 @@ package com.indiafirstpandit.controller;
 import com.indiafirstpandit.dto.PujaDto;
 import com.indiafirstpandit.enums.ServiceStatus;
 import com.indiafirstpandit.model.Puja;
+import com.indiafirstpandit.requests.PujaCreateRequest;
 import com.indiafirstpandit.service.PujaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,9 @@ public class PujaController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<PujaDto> createPuja(@RequestBody PujaDto pujaDto) {
+    public ResponseEntity<PujaDto> createPuja(@RequestBody PujaCreateRequest pujaCreateRequest) {
 //        System.out.println(puja);
-        Puja savedPuja = pujaService.savePuja(pujaDto);
+        Puja savedPuja = pujaService.savePuja(pujaCreateRequest);
         return ResponseEntity.ok(new PujaDto(savedPuja));
     }
 
@@ -39,7 +40,7 @@ public class PujaController {
 
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Puja> updatePuja(@RequestBody PujaDto pujaDto, @PathVariable UUID id)
+    public ResponseEntity<PujaDto> updatePuja(@RequestBody PujaCreateRequest pujaDto, @PathVariable UUID id)
     {
         ServiceStatus status = pujaService.updatePuja(id,pujaDto);
         if(status == ServiceStatus.Done)

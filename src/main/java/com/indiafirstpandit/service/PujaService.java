@@ -7,9 +7,11 @@ import com.indiafirstpandit.model.Samagri;
 import com.indiafirstpandit.repo.PujaCategoryRepository;
 import com.indiafirstpandit.repo.PujaRepository;
 import com.indiafirstpandit.repo.SamagriRepository;
+import com.indiafirstpandit.requests.PujaCreateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,26 +47,38 @@ public class PujaService {
 //        return pujaRepository.findByAmountLessThanEqual(amount);
 //    }
 
-    public Puja savePuja(PujaDto pujaDto) {
+    public Puja savePuja(PujaCreateRequest pujaCreateRequest) {
         Puja puja = new Puja();
         //add this to puja entity as a constructor so that it can return puja object by receiving the DTO object
-        puja.setName(pujaDto.getName());
-        puja.setDescription(pujaDto.getDescription());
-        puja.setBenefits(pujaDto.getBenefits());
-        puja.setMantra(pujaDto.getMantra());
-        puja.setPanditNeeded(pujaDto.getPanditNeeded());
-        puja.setFreqExtraAddedPandit(pujaDto.getFreqExtraAddedPandit());
-        puja.setPricePerExtraPandit(pujaDto.getPricePerExtraPandit());
-        puja.setMaxPandits(pujaDto.getMaxPandits());
-        puja.setAmount(pujaDto.getAmount());
-        puja.setImage1(pujaDto.getImage1());
-        puja.setImage2(pujaDto.getImage2());
-        puja.setImage3(pujaDto.getImage3());
-        puja.setPujaCategory(pujaCategoryRepository.getReferenceById(pujaDto.getPujaCategoryId()));
-//        if (pujaDto.getSamagriId()!=null)
-//        {
-//            puja.setSamagri(samagriRepository.findById(pujaDto.getSamagriId()).orElse(null));
-//        }
+        puja.setName(pujaCreateRequest.getName());
+        puja.setDescription(pujaCreateRequest.getDescription());
+        puja.setBenefits(pujaCreateRequest.getBenefits());
+        puja.setMantra(pujaCreateRequest.getMantra());
+        puja.setPanditNeeded(pujaCreateRequest.getPanditNeeded());
+        puja.setFreqExtraAddedPandit(pujaCreateRequest.getFreqExtraAddedPandit());
+        puja.setPricePerExtraPandit(pujaCreateRequest.getPricePerExtraPandit());
+        puja.setMaxPandits(pujaCreateRequest.getMaxPandits());
+        puja.setAmount(pujaCreateRequest.getAmount());
+        puja.setImage1(pujaCreateRequest.getImage1());
+        puja.setImage2(pujaCreateRequest.getImage2());
+        puja.setImage3(pujaCreateRequest.getImage3());
+        puja.setPujaCategory(pujaCategoryRepository.getReferenceById(pujaCreateRequest.getPujaCategoryId()));
+
+        System.out.println(pujaCreateRequest.getSamagriUUIDs());
+        if (pujaCreateRequest.getSamagriUUIDs()!=null)
+        {
+            List<Samagri> samagris = samagriRepository.findAllById(pujaCreateRequest.getSamagriUUIDs());
+            puja.setSamagri(samagris);
+            pujaRepository.save(puja);
+            for(Samagri samagri : samagris)
+            {
+                if (samagri.getPujas() == null) {
+                    samagri.setPujas(new ArrayList<>());
+                }
+                samagri.getPujas().add(puja); // Add Puja to the Samagri
+            }
+            samagriRepository.saveAll(samagris);
+        }
         return pujaRepository.save(puja);
     }
 
@@ -72,7 +86,7 @@ public class PujaService {
         pujaRepository.deleteById(id);
     }
 
-    public ServiceStatus updatePuja(UUID id,PujaDto updatedPujaDto){
+    public ServiceStatus updatePuja(UUID id,PujaCreateRequest updatedPujaDto){
         if (pujaRepository.existsById(id)) {
             Puja existingPuja = pujaRepository.findById(id).orElse(new Puja());
             existingPuja.setName(updatedPujaDto.getName());
@@ -91,6 +105,21 @@ public class PujaService {
 //            if (updatedPujaDto.getSamagriId()!=null) {
 //                existingPuja.setSamagri(samagriRepository.getReferenceById(updatedPujaDto.getSamagriId()));
 //            }
+            if (updatedPujaDto.getSamagriUUIDs()!=null)
+            {
+                List<Samagri> samagris = samagriRepository.findAllById(updatedPujaDto.getSamagriUUIDs());
+                existingPuja.setSamagri(samagris);
+                pujaRepository.save(existingPuja);
+                for(Samagri samagri : samagris)
+                {
+                    if (samagri.getPujas() == null) {
+                        samagri.setPujas(new ArrayList<>());
+                    }
+                    samagri.getPujas().add(existingPuja); // Add Puja to the Samagri
+                }
+                samagriRepository.saveAll(samagris);
+            }
+
             pujaRepository.save(existingPuja);
             return ServiceStatus.Done;
         }

@@ -20,10 +20,12 @@ public class CartDto {
         if(!cart.getCartItems().isEmpty()) {
             this.cartItemDtos = cart.getCartItems().stream().map(CartItemDto::new).toList();
         }
+        this.totalCartPrice = cart.getTotalCartPrice();
+        this.gst= cart.getGst();
     }
 
     private UUID id;
     private List<CartItemDto> cartItemDtos ;
-
-
+    private Double totalCartPrice ;
+    private Double gst;
 }

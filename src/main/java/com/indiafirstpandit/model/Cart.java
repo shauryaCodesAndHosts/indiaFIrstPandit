@@ -22,5 +22,8 @@ public class Cart {
     @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CartItem> cartItems ;
 
+    private Double totalCartPrice;
+
+    private Double gst;
 
 }

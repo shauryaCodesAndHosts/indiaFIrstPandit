@@ -2,6 +2,7 @@ package com.indiafirstpandit.dto.samagri;
 
 import com.indiafirstpandit.dto.ProductDto;
 import com.indiafirstpandit.dto.PujaDto;
+import com.indiafirstpandit.dto.PujaSummaryDto;
 import com.indiafirstpandit.model.Samagri;
 import lombok.Data;
 import lombok.Getter;
@@ -29,8 +30,9 @@ public class SamagriDto {
         }
         if(samagri.getPujas() != null)
         {
-            this.pujaDtos = samagri.getPujas().stream().map(PujaDto::new).toList();
+            this.pujaSummaryDtos = samagri.getPujas().stream().map(PujaSummaryDto::new).toList();
         }
+        this.image = samagri.getImage();
     }
 
 
@@ -39,7 +41,7 @@ public class SamagriDto {
     private Double price;
     private Integer stock;
     private List<ProductDto> productDtos;
-
-    private List<PujaDto> pujaDtos;
+    private String image;
+    private List<PujaSummaryDto> pujaSummaryDtos;
 
 }

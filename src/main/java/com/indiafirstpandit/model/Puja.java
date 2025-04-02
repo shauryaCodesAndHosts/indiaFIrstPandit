@@ -1,10 +1,13 @@
 package com.indiafirstpandit.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 import java.util.UUID;
 
 
@@ -50,7 +53,13 @@ public class Puja {
     private PujaCategory pujaCategory;  // Category of the product (e.g., flowers, utensils, etc.)
 
 
-//    @ManyToOne(optional = true)
+    @JsonIgnore
+    private String keywords;
+
+    @ManyToMany(mappedBy = "pujas")
 ////    @JoinColumn(name = "samagri_id")
-//    private Samagri samagri;  // Association to the Samagri entity
+    private List<Samagri> samagri;  // Association to the Samagri entity
+
+
+
 }

@@ -25,7 +25,7 @@ public class CartController {
     @GetMapping("/getCart")
     public ResponseEntity<CartDto> getEverything(@AuthenticationPrincipal UserPrincipal userPrincipal)
     {
-        return ResponseEntity.ok(new CartDto(userPrincipal.getUser().getCart()));
+        return ResponseEntity.ok(cartService.getCart(userPrincipal.getUser()));
     }
 
     @PostMapping("/addToCart")
@@ -40,14 +40,18 @@ public class CartController {
     }
 
     @PutMapping("/edit/{id}")
-    public HttpStatus editCartItem(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody Quantity quantity, @PathVariable UUID id)
+    public ResponseEntity<CartDto> editCartItem(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody Quantity quantity, @PathVariable UUID id)
     {
         Cart cart = cartService.updateCart(userPrincipal.getUser(), id, quantity);
         if (cart.getCartItems()==null)
         {
-            return HttpStatus.NOT_ACCEPTABLE;
+//            return HttpStatus.NOT_ACCEPTABLE;
+            return ResponseEntity.ok(cartService.getCart(userPrincipal.getUser()));
+
         }
-        return HttpStatus.CREATED;
+//        return HttpStatus.CREATED;
+        return ResponseEntity.ok(cartService.getCart(userPrincipal.getUser()));
+
     }
 
     @DeleteMapping("/delete/{id}")

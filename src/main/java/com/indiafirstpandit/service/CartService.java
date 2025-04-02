@@ -1,5 +1,6 @@
 package com.indiafirstpandit.service;
 
+import com.indiafirstpandit.dto.CartDto;
 import com.indiafirstpandit.dto.CartItemDto;
 import com.indiafirstpandit.dto.Quantity;
 import com.indiafirstpandit.enums.CartItemType;
@@ -39,6 +40,7 @@ public class CartService {
         {
             Product product = productRepository.findById(cartItemDto.getItemId()).get();
         cartItem.setFinalPrice(cartItemDto.getQuantity()*(product.getPrice()));
+        cartItem.setImage(product.getImage());
             if (cartItemDto.getQuantity() <= product.getStock()) {
                 cartItem.setQuantity(cartItemDto.getQuantity());
             }
@@ -48,8 +50,16 @@ public class CartService {
         }
         else if (cartItemDto.getCartItemType() == CartItemType.Puja) {
             Puja puja = pujaRepository.findById(cartItemDto.getItemId()).get();
-            cartItem.setFinalPrice(puja.getAmount() + cartItemDto.getQuantity()*(puja.getPricePerExtraPandit())
-            );
+            Double finalPrice = puja.getAmount() + cartItemDto.getQuantity()*(puja.getPricePerExtraPandit());
+            cartItem.setImage(puja.getImage1());
+            if(cartItemDto.getSamagriId()!=null)
+            {
+                Double samagriPrice = samagriRepository.findById(cartItemDto.getSamagriId()).get().getPrice();
+                finalPrice+=samagriPrice;
+                cartItem.setSamagriId(cartItemDto.getSamagriId());
+            }
+            cartItem.setFinalPrice(finalPrice);
+
             if (cartItemDto.getQuantity() <= puja.getMaxPandits()) {
                 cartItem.setQuantity(cartItemDto.getQuantity());
             }
@@ -59,6 +69,7 @@ public class CartService {
 
         } else if (cartItemDto.getCartItemType() == CartItemType.Samagri) {
             Samagri samagri = samagriRepository.findById(cartItemDto.getItemId()).get();
+            cartItem.setImage(samagri.getImage());
             cartItem.setFinalPrice(
                     cartItemDto.getQuantity()*(samagri.getPrice())
             );
@@ -90,6 +101,7 @@ public class CartService {
             if (product.getStock()>=quantity.getQuantity())
             {
                 cartItem.setQuantity(quantity.getQuantity());
+                cartItem.setFinalPrice(quantity.getQuantity()* product.getPrice());
             }
             else{
                 return new Cart();
@@ -101,6 +113,8 @@ public class CartService {
             if (samagri.getStock()>= quantity.getQuantity())
             {
                 cartItem.setQuantity(quantity.getQuantity());
+                cartItem.setFinalPrice(quantity.getQuantity()* samagri.getPrice());
+
             }
             else {
                 return new Cart();
@@ -110,6 +124,8 @@ public class CartService {
             if (puja.getMaxPandits()>= quantity.getQuantity())
             {
                 cartItem.setQuantity(quantity.getQuantity());
+                cartItem.setFinalPrice(puja.getAmount() + quantity.getQuantity()*(puja.getPricePerExtraPandit()));
+
             }
             else {
                 return new Cart();
@@ -133,5 +149,18 @@ public class CartService {
         cart.setCartItems(cartItems);
         cartRepository.save(cart);
         return ;
+    }
+
+    public CartDto getCart(User user) {
+        Cart cart = user.getCart();
+        Double totalCartPrice = Double.valueOf(0);
+        for(CartItem cartItem : cart.getCartItems())
+        {
+            totalCartPrice+=cartItem.getFinalPrice();
+        }
+        cart.setTotalCartPrice(totalCartPrice);
+        cart.setGst(Double.valueOf(0));
+        cartRepository.save(cart);
+        return new CartDto(cart);
     }
 }

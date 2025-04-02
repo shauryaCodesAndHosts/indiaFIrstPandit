@@ -38,9 +38,11 @@ public class User {
 //    @OneToMany
 //    private Order orders;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<LocalOrder> orders;  // List of orders placed by the user
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     private Cart cart;
 

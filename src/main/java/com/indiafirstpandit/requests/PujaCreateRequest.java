@@ -1,24 +1,20 @@
-package com.indiafirstpandit.dto;
+package com.indiafirstpandit.requests;
 
 import com.indiafirstpandit.dto.samagri.SamagriDto;
 import com.indiafirstpandit.model.Puja;
-import com.indiafirstpandit.model.Samagri;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-
-
 
 @Getter
 @Setter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PujaDto {
+public class PujaCreateRequest {
 
-    public PujaDto(Puja puja)
+    public PujaCreateRequest(Puja puja)
     {
 
         this.id = puja.getId();
@@ -36,7 +32,7 @@ public class PujaDto {
         this.image3 = puja.getImage3();
 
         this.pujaCategoryId = puja.getPujaCategory().getId();
-        this.samagriDtos = puja.getSamagri().stream().map(SamagriDto::new).toList();
+//        this.samagriUUIDs = puja.getSamagri().stream().map(SamagriDto::new).toList();
     }
 
 
@@ -54,5 +50,5 @@ public class PujaDto {
     private String image2;
     private String image3;
     private UUID pujaCategoryId;
-    private List<SamagriDto> samagriDtos;
+    private List<UUID> samagriUUIDs;
 }

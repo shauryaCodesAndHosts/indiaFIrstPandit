@@ -3,16 +3,16 @@ package com.indiafirstpandit.service;
 import com.indiafirstpandit.dto.mailDto.SimpleMail;
 import com.indiafirstpandit.enums.UserRoles;
 import com.indiafirstpandit.enums.VerificationStatus;
-import com.indiafirstpandit.model.Cart;
-import com.indiafirstpandit.model.Otp;
-import com.indiafirstpandit.model.RefreshToken;
-import com.indiafirstpandit.model.User;
+import com.indiafirstpandit.model.*;
+import com.indiafirstpandit.repo.CartRepository;
 import com.indiafirstpandit.repo.OtpRepository;
 import com.indiafirstpandit.repo.UserRepository;
+import com.indiafirstpandit.repo.UsersDeletedRepository;
 import com.indiafirstpandit.requests.LoginRequest;
 import com.indiafirstpandit.requests.RegisterRequest;
 import com.indiafirstpandit.response.JwtResponse;
 import com.indiafirstpandit.response.RegisterResponse;
+import com.indiafirstpandit.response.UserProfileResponse;
 import com.indiafirstpandit.service.auth.RefreshTokenService;
 import com.indiafirstpandit.service.mail.MailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,13 @@ public class UserService {
     private RefreshTokenService refreshTokenService;
 
     @Autowired
+    private CartRepository cartRepository;
+
+    @Autowired
     private OtpRepository otpRepository;
+
+    @Autowired
+    private UsersDeletedRepository usersDeletedRepository;
 
     public User getUserById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
@@ -87,12 +93,17 @@ public class UserService {
         {
             return RegisterResponse.builder().email("exists").build(); //to check in the controller
         }
+        Cart cart = new Cart();
+        cartRepository.save(cart);
+
         User user = User.builder()
                 .email(registerRequest.getEmail())
                 .password(registerRequest.getPassword())
                 .name(registerRequest.getName())
+                .cart(cart)
                 .role(UserRoles.Customer)
                 .build();
+
         System.out.println( "received user -> " + user);
         System.out.println("register request -> " + registerRequest);
         String otp = generateOTP();
@@ -244,6 +255,25 @@ public class UserService {
                 .build();
 
     }
+
+    public UserProfileResponse getUserProfile(User user) {
+        return new UserProfileResponse(user);
+    }
+
+
+    public void deleteUser(User user, String reason){
+
+        UsersDeleted usersDeleted = new UsersDeleted();
+        usersDeleted.setName(user.getName());
+        usersDeleted.setReason(reason);
+        usersDeleted.setEmailAddress(user.getEmail());
+        usersDeleted.setPhoneNumber(user.getPhoneNumber());
+        usersDeleted.setOrdersPlaced(user.getOrders().size());
+        userRepository.deleteById(user.getId());
+        usersDeletedRepository.save(usersDeleted);
+        return;
+    }
+
 }
 
 

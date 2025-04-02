@@ -1,8 +1,11 @@
 package com.indiafirstpandit.controller;
 
+import com.indiafirstpandit.model.Cart;
 import com.indiafirstpandit.model.LocalOrder;
 import com.indiafirstpandit.model.User;
 import com.indiafirstpandit.model.UserPrincipal;
+import com.indiafirstpandit.requests.JustUUID;
+import com.indiafirstpandit.response.OptionsResponse;
 import com.indiafirstpandit.service.LocalOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/orders")
+@CrossOrigin(origins = "*", allowedHeaders = "*")  // Allow all origins and headers
 public class LocalOrderController {
 
     @Autowired
@@ -25,10 +29,16 @@ public class LocalOrderController {
     }
 
     @PostMapping("/placeOrder")
-    public ResponseEntity<LocalOrder> placeOrder(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody UUID AddressId)
+    public ResponseEntity<OptionsResponse> placeOrder(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody JustUUID id)
     {
+//
         User currentUser = userPrincipal.getUser();
-        return localOrderService.placeOrder(currentUser, AddressId);
+        Cart userCart = currentUser.getCart();
+        if (userCart == null || userCart.getCartItems().isEmpty()) {
+            return ResponseEntity.badRequest().body(null); // Return an error response if the cart is empty
+        }
+
+        return ResponseEntity.ok(localOrderService.placeOrder(currentUser, id.getId()));
 //        return null;
     }
 

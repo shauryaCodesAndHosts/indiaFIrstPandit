@@ -26,6 +26,8 @@ public class Samagri {
 
     private Integer stock;
 
+    private String image;
+
     //(mappedBy = "samagri", cascade = CascadeType.ALL)
     @ManyToMany
     private List<Product> products;  // List of products in the samagri

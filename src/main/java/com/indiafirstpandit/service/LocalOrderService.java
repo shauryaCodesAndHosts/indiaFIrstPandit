@@ -6,6 +6,7 @@ import com.indiafirstpandit.enums.OrderItemType;
 import com.indiafirstpandit.model.*;
 import com.indiafirstpandit.repo.LocalOrderItemRepository;
 import com.indiafirstpandit.repo.LocalOrderRepository;
+import com.indiafirstpandit.response.OptionsResponse;
 import com.razorpay.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -68,15 +69,16 @@ public class LocalOrderService {
         localOrderRepository.deleteById(id);
     }
 
-    public ResponseEntity<LocalOrder> placeOrder(User currentUser, UUID AddressId) {
+    public OptionsResponse placeOrder(User currentUser, UUID AddressId) {
         Cart userCart = currentUser.getCart();
-        if (userCart == null || userCart.getCartItems().isEmpty()) {
-            return ResponseEntity.badRequest().body(null); // Return an error response if the cart is empty
-        }
+//        if (userCart == null || userCart.getCartItems().isEmpty()) {
+//            return ResponseEntity.badRequest().body(null); // Return an error response if the cart is empty
+//        }
 //        Double totalPrice = userCart.getCartItems().stream().mapToDouble(cartItem -> cartItem.getFinalPrice()).sum();
         Double totalPrice = userCart.getCartItems().stream().reduce(0.0,(sum, cartItem)-> sum + cartItem.getFinalPrice(), Double::sum );
         Address orderAddress = addressService.getAddress(AddressId);
-//        Order order = razorpayService.createRazorpayOrder(totalPrice,);
+        Order razorPayOrder = razorpayService.createRazorpayOrder(totalPrice);
+        OptionsResponse options = razorpayService.createOptions(razorPayOrder,currentUser);
         LocalOrder localOrder = new LocalOrder();
         List<LocalOrderItem> localOrderItems = new ArrayList<>();
         for( CartItem cartItem : userCart.getCartItems())
@@ -130,7 +132,7 @@ public class LocalOrderService {
         localOrder.setTotalAmount(BigDecimal.valueOf(totalPrice));
         localOrderRepository.save(localOrder);
         System.out.println("local order  ->"+new LocalOrderDto(localOrder));
-        System.out.println("razorpay order -> ");
-        return null;
+        System.out.println("razorpay order -> "+ razorPayOrder);
+        return options;
     }
 }
