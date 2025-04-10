@@ -169,6 +169,12 @@
 <!--			<scope>import</scope>-->
 		</dependency>
 
+<!--		<dependency>-->
+<!--			<groupId>com.plivo</groupId>-->
+<!--			<artifactId>plivo-java</artifactId>-->
+<!--			<version>5.9.3</version>-->
+<!--		</dependency>-->
+
 	</dependencies>
 
 	<build>
