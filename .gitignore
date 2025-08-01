@@ -35,3 +35,4 @@ build/
 ### VS Code ###
 .vscode/
 src/main/resources/application.properties
+src/main/resources/indiafirstpandit-firebase-adminsdk-fbsvc-584c89b303.json
