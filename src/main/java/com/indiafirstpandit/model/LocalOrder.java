@@ -38,6 +38,8 @@ public class LocalOrder {
     private Address address;
 
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private RazorpayOrder razorpayOrder;
 
     @PrePersist
     protected void onCreate()

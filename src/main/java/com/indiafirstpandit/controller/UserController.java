@@ -17,13 +17,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
-//    @GetMapping("/getAll")
-//    public ResponseEntity<List<User>> getAllUsers()
-//    {
-//        return userService.getAllUsers()
-//    }
-
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) {
         User user = userService.getUserById(id);

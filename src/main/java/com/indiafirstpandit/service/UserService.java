@@ -10,17 +10,20 @@ import com.indiafirstpandit.repo.UserRepository;
 import com.indiafirstpandit.repo.UsersDeletedRepository;
 import com.indiafirstpandit.requests.LoginRequest;
 import com.indiafirstpandit.requests.RegisterRequest;
+import com.indiafirstpandit.requests.UserProfileEditRequest;
 import com.indiafirstpandit.response.JwtResponse;
 import com.indiafirstpandit.response.RegisterResponse;
 import com.indiafirstpandit.response.UserProfileResponse;
 import com.indiafirstpandit.service.auth.RefreshTokenService;
 import com.indiafirstpandit.service.mail.MailSenderService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -256,7 +259,12 @@ public class UserService {
 
     }
 
+    //added it because the user was lazy loading the orders
+    @Transactional
     public UserProfileResponse getUserProfile(User user) {
+//        user.getAddresses().size();
+//        Hibernate.initialize(user.getAddresses());
+
         return new UserProfileResponse(user);
     }
 
@@ -274,6 +282,12 @@ public class UserService {
         return;
     }
 
+    public UserProfileResponse editUserProfile(UserProfileEditRequest userProfileEditRequest, User user) {
+        user.setName(userProfileEditRequest.getName());
+        return new UserProfileResponse(userRepository.save(user));
+
+
+    }
 }
 
 

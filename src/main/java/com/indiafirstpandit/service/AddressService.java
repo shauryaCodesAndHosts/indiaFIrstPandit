@@ -44,4 +44,12 @@ public class AddressService {
 
         return addressRepository.findByUserId(user.getId());
     }
+
+    public Boolean checkLocation(String city) {
+        List<String> cities = List.of("noida", "ghaziabad","delhi", "gurugram");
+        if (cities.contains(city.toLowerCase()))
+            return Boolean.TRUE;
+        else
+            return Boolean.FALSE;
+    }
 }

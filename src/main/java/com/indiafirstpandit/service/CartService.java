@@ -31,6 +31,9 @@ public class CartService {
     @Autowired
     private SamagriRepository samagriRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public Cart addToCart(User user, CartItemDto cartItemDto) {
         CartItem cartItem = new CartItem();
         cartItem.setItemId(cartItemDto.getItemId());
@@ -102,6 +105,9 @@ public class CartService {
             {
                 cartItem.setQuantity(quantity.getQuantity());
                 cartItem.setFinalPrice(quantity.getQuantity()* product.getPrice());
+                System.out.println(new CartItemDto(cartItem));
+                cartItemRepository.save(cartItem);
+                System.out.println(new CartItemDto(cartItemRepository.findById(id).get()));
             }
             else{
                 return new Cart();
@@ -114,6 +120,8 @@ public class CartService {
             {
                 cartItem.setQuantity(quantity.getQuantity());
                 cartItem.setFinalPrice(quantity.getQuantity()* samagri.getPrice());
+                System.out.println(new CartItemDto(cartItem));
+                cartItemRepository.save(cartItem);
 
             }
             else {
@@ -125,6 +133,8 @@ public class CartService {
             {
                 cartItem.setQuantity(quantity.getQuantity());
                 cartItem.setFinalPrice(puja.getAmount() + quantity.getQuantity()*(puja.getPricePerExtraPandit()));
+                System.out.println(new CartItemDto(cartItem));
+                cartItemRepository.save(cartItem);
 
             }
             else {
@@ -137,7 +147,8 @@ public class CartService {
             return new Cart();
         }
         cartItemRepository.save(cartItem);
-        return user.getCart();
+        return cartRepository.findById(user.getCart().getId()).orElse(user.getCart());
+//        return user.getCart();
 
     }
 
@@ -152,10 +163,16 @@ public class CartService {
     }
 
     public CartDto getCart(User user) {
-        Cart cart = user.getCart();
+//        Cart cart = user.getCart();
+        Cart cart = userRepository.findById(user.getId()).get().getCart();
         Double totalCartPrice = Double.valueOf(0);
+
         for(CartItem cartItem : cart.getCartItems())
         {
+            if(cartItem.getFinalPrice()== null)
+            {
+                cartItem.setFinalPrice(0.0);
+            }
             totalCartPrice+=cartItem.getFinalPrice();
         }
         cart.setTotalCartPrice(totalCartPrice);

@@ -5,9 +5,11 @@ import com.indiafirstpandit.model.Address;
 import com.indiafirstpandit.model.User;
 import com.indiafirstpandit.model.UserPrincipal;
 import com.indiafirstpandit.repo.UserRepository;
+import com.indiafirstpandit.requests.LocationRequest;
 import com.indiafirstpandit.service.AddressService;
 import com.indiafirstpandit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +36,12 @@ public class AddressController {
     public List<AddressDto> addAddress(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody AddressDto addressDto)
     {
         return addressService.addAddress(userPrincipal.getUser(), addressDto).stream().map(AddressDto::new).collect(Collectors.toList());
+    }
+
+    @PostMapping("/location")
+    public ResponseEntity<Boolean> checkLocation(@RequestBody LocationRequest locationRequest){
+        Boolean response = addressService.checkLocation(locationRequest.getCity());
+        return ResponseEntity.ok(response);
     }
 
 }

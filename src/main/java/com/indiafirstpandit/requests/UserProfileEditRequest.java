@@ -1,20 +1,16 @@
-package com.indiafirstpandit.response;
+package com.indiafirstpandit.requests;
 
-import com.indiafirstpandit.model.Address;
 import com.indiafirstpandit.model.User;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.List;
+import lombok.*;
 
 @Data
 @Getter
 @Setter
 //@Builder
-public class UserProfileResponse {
-    public UserProfileResponse(User user)
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserProfileEditRequest {
+    public UserProfileEditRequest(User user)
     {
         this.name = user.getName();
         this.email= user.getEmail();
@@ -26,7 +22,7 @@ public class UserProfileResponse {
     private String name;
     private String email;
     private String phoneNumber;
-//    private Integer ordersPlaced;
+    //    private Integer ordersPlaced;
 //    private List<Address> addresses;
     private boolean isVerified;
 

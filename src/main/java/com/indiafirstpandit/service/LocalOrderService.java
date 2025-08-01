@@ -6,6 +6,7 @@ import com.indiafirstpandit.enums.OrderItemType;
 import com.indiafirstpandit.model.*;
 import com.indiafirstpandit.repo.LocalOrderItemRepository;
 import com.indiafirstpandit.repo.LocalOrderRepository;
+import com.indiafirstpandit.requests.RazorPayVerificationRequest;
 import com.indiafirstpandit.response.OptionsResponse;
 import com.razorpay.Order;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,8 +78,8 @@ public class LocalOrderService {
 //        Double totalPrice = userCart.getCartItems().stream().mapToDouble(cartItem -> cartItem.getFinalPrice()).sum();
         Double totalPrice = userCart.getCartItems().stream().reduce(0.0,(sum, cartItem)-> sum + cartItem.getFinalPrice(), Double::sum );
         Address orderAddress = addressService.getAddress(AddressId);
-        Order razorPayOrder = razorpayService.createRazorpayOrder(totalPrice);
-        OptionsResponse options = razorpayService.createOptions(razorPayOrder,currentUser);
+        Order razorPayServerOrder = razorpayService.createRazorpayOrder(totalPrice);
+        OptionsResponse options = razorpayService.createOptions(razorPayServerOrder,currentUser, orderAddress);
         LocalOrder localOrder = new LocalOrder();
         List<LocalOrderItem> localOrderItems = new ArrayList<>();
         for( CartItem cartItem : userCart.getCartItems())
@@ -130,9 +131,29 @@ public class LocalOrderService {
         localOrder.setUser(currentUser);
         localOrder.setAddress(orderAddress);
         localOrder.setTotalAmount(BigDecimal.valueOf(totalPrice));
+
+        RazorpayOrder razorpayOrder = new RazorpayOrder();
+
+        razorpayOrder.setOrder_id(options.getOrder_id());
+        razorpayOrder.setAmount(options.getAmount());
+        razorpayOrder.setName(options.getName());
+        razorpayOrder.setDescription(options.getDescription());
+        localOrder.setRazorpayOrder(razorpayOrder);
         localOrderRepository.save(localOrder);
         System.out.println("local order  ->"+new LocalOrderDto(localOrder));
-        System.out.println("razorpay order -> "+ razorPayOrder);
+        System.out.println("razorpay order -> "+ razorPayServerOrder);
         return options;
+    }
+
+    public boolean verify(User currentUser, RazorPayVerificationRequest razorPayVerificationRequest) {
+
+        LocalOrder localOrder = localOrderRepository.findById(razorPayVerificationRequest.getLocalOrderId()).get();
+        RazorpayOrder razorpayOrder = localOrder.getRazorpayOrder();
+        razorpayOrder.setRazorpay_payment_id(razorPayVerificationRequest.getRazorpay_payment_id());
+        razorpayOrder.setRazorpay_order_id(razorPayVerificationRequest.getRazorpay_order_id());
+        razorpayOrder.setRazorpay_signature(razorPayVerificationRequest.getRazorpay_signature());
+        localOrderRepository.save(localOrder);
+
+        return razorpayService.verify(localOrder);
     }
 }

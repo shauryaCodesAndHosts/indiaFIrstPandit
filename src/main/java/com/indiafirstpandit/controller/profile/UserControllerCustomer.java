@@ -2,6 +2,7 @@ package com.indiafirstpandit.controller.profile;
 
 
 import com.indiafirstpandit.model.UserPrincipal;
+import com.indiafirstpandit.requests.UserProfileEditRequest;
 import com.indiafirstpandit.response.UserProfileResponse;
 import com.indiafirstpandit.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,12 @@ public class UserControllerCustomer {
     @Autowired
     private UserService userService;
 
+
+    //
+
     @GetMapping
     public ResponseEntity<UserProfileResponse> userProfileResponse(@AuthenticationPrincipal UserPrincipal userPrincipal){
+        System.out.println();
         UserProfileResponse response = userService.getUserProfile(userPrincipal.getUser());
         return ResponseEntity.ok(response);
     }
@@ -29,5 +34,11 @@ public class UserControllerCustomer {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping
+    public ResponseEntity<UserProfileResponse> editProfile(@RequestBody UserProfileEditRequest userProfileEditRequest, @AuthenticationPrincipal UserPrincipal userPrincipal)
+    {
+        UserProfileResponse response = userService.editUserProfile(userProfileEditRequest,userPrincipal.getUser());
+        return ResponseEntity.ok(response);
+    }
 
 }

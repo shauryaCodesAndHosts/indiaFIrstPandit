@@ -1,9 +1,6 @@
 package com.indiafirstpandit.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,8 +17,15 @@ public class RazorpayOrder {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+//    @OneToOne
+//    private LocalOrder localOrder;
 
-
-
+    private String order_id;
+    private Integer amount ;
+    private String name;
+    private String description;
+    private String razorpay_payment_id;
+    private String razorpay_order_id;
+    private String razorpay_signature;
 
 }

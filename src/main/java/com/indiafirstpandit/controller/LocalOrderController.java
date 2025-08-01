@@ -5,9 +5,11 @@ import com.indiafirstpandit.model.LocalOrder;
 import com.indiafirstpandit.model.User;
 import com.indiafirstpandit.model.UserPrincipal;
 import com.indiafirstpandit.requests.JustUUID;
+import com.indiafirstpandit.requests.RazorPayVerificationRequest;
 import com.indiafirstpandit.response.OptionsResponse;
 import com.indiafirstpandit.service.LocalOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +45,14 @@ public class LocalOrderController {
     }
 
 
+    @PostMapping("/verify")
+    public ResponseEntity<Boolean> verifyRPOrder(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody RazorPayVerificationRequest razorPayVerificationRequest)
+    {
+        System.out.println("the razorpay request is ->>> *****"+razorPayVerificationRequest);
+        User currentUser = userPrincipal.getUser();
+        boolean status = localOrderService.verify(currentUser, razorPayVerificationRequest);
+        return ResponseEntity.ok(status);
+    }
 
 
 
